@@ -1,36 +1,173 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏦 ตัวอ่านสลิปธนาคาร - Bank Slip Reader
 
-## Getting Started
+แอปพลิเคชันสำหรับอ่านข้อมูลจากสลิปธนาคารด้วย QR Code และ OCR (Optical Character Recognition)
 
-First, run the development server:
+## ✨ ฟีเจอร์
+
+- 📸 **อัปโหลดสลิป** - รองรับ JPG, PNG โดย Drag & Drop หรือคลิกเลือกไฟล์
+- 📱 **อ่าน QR Code** - อ่านข้อมูล PromptPay จาก QR Code
+- 🔍 **OCR** - อ่านข้อความจากสลิปอัตโนมัติ
+- 💰 **ข้อมูลที่อ่านได้**:
+  - จำนวนเงิน
+  - ค่าธรรมเนียม
+  - วันที่-เวลาทำรายการ
+  - หมายเลขอ้างอิง (Reference Number)
+  - เลขที่ธุรกรรม
+  - PromptPay ID
+  - บัญชีต้นทาง/ปลายทาง
+  - ประเภทการโอน
+- 📋 **JSON Output** - Export ข้อมูลเป็น JSON พร้อม Copy to Clipboard
+- 📱 **Responsive Design** - ใช้งานได้ทุกอุปกรณ์
+
+## 🚀 เทคโนโลยี
+
+- **Next.js 15.5** - React Framework
+- **Bootstrap 5** - UI Framework
+- **Tesseract.js** - OCR Engine
+- **jsQR** - QR Code Scanner
+- **TypeScript** - Type Safety
+
+## 📦 การติดตั้ง
 
 ```bash
+# Clone repository
+git clone <your-repo-url>
+cd slip-ocr
+
+# ติดตั้ง dependencies
+npm install
+
+# รันโปรเจคในโหมด development
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิดเบราว์เซอร์ที่ [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 คำสั่งที่ใช้งาน
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Development
+npm run dev
 
-## Learn More
+# Build for production
+npm run build
 
-To learn more about Next.js, take a look at the following resources:
+# Start production server
+npm start
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Lint code
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 โครงสร้างโปรเจค
 
-## Deploy on Vercel
+```
+slip-ocr/
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx      # Root layout
+│   │   ├── page.tsx        # Home page
+│   │   └── globals.css     # Global styles
+│   └── components/
+│       └── SlipReader.tsx  # Main component
+├── public/                 # Static files
+├── package.json
+├── tsconfig.json
+└── next.config.ts
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🌐 Deploy บน Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### วิธีที่ 1: Deploy ผ่าน Vercel Dashboard
+
+1. ไปที่ [vercel.com](https://vercel.com)
+2. Sign in ด้วย GitHub
+3. คลิก "Add New Project"
+4. Import repository ของคุณ
+5. คลิก "Deploy"
+
+### วิธีที่ 2: Deploy ผ่าน Vercel CLI
+
+```bash
+# ติดตั้ง Vercel CLI
+npm install -g vercel
+
+# Login
+vercel login
+
+# Deploy
+vercel
+```
+
+## 🔒 Environment Variables
+
+โปรเจคนี้ไม่จำเป็นต้องใช้ environment variables เพิ่มเติม เนื่องจากทำงานทั้งหมดบน client-side
+
+## 📝 การใช้งาน
+
+1. เปิดแอปพลิเคชัน
+2. อัปโหลดรูปสลิปธนาคาร (JPG หรือ PNG)
+3. รอระบบประมวลผล (อ่าน QR Code + OCR)
+4. ดูผลลัพธ์ที่แสดง
+5. คัดลอก JSON output หากต้องการ
+6. คลิก "อัปโหลดสลิปใหม่" เพื่อเริ่มใหม่
+
+## 🎯 ตัวอย่างการใช้งาน
+
+### JSON Output Format
+
+```json
+{
+  "slip_data": {
+    "ocr_data": {
+      "amount": "1000.00",
+      "fee": "0.00",
+      "date": "02 Oct 2025",
+      "time": "15:55:00",
+      "datetime": "10/02/2025 15:55:00",
+      "reference": "BAYM4636261160",
+      "transaction_no": null,
+      "ref1": null,
+      "ref2": null,
+      "from_account": "123-4-56789-0",
+      "to_account": "987-6-54321-0",
+      "transfer_type": "PromptPay"
+    },
+    "qr_data": {
+      "amount": "1000.00",
+      "merchant_id": "0xx-xxx-xxxx",
+      "reference": "REF123456",
+      "ref1": "",
+      "ref2": ""
+    }
+  },
+  "timestamp": "2025-10-15T03:00:00.000Z",
+  "success": true
+}
+```
+
+## 🐛 การแก้ไขปัญหา
+
+### OCR อ่านข้อมูลไม่ถูกต้อง
+- ตรวจสอบว่ารูปภาพชัดเจน
+- ลองถ่ายรูปใหม่ในที่ที่มีแสงสว่างเพียงพอ
+- ตรวจสอบว่ารูปไม่เอียงหรือเบลอ
+
+### QR Code อ่านไม่ได้
+- ตรวจสอบว่า QR Code ชัดเจนและไม่เสียหาย
+- ลองถ่ายรูปใหม่โดยให้ QR Code อยู่ตรงกลาง
+
+## 📄 License
+
+MIT License
+
+## 👨‍💻 ผู้พัฒนา
+
+พัฒนาด้วย ❤️ โดยใช้ Next.js และ TypeScript
+
+## 🙏 ขอบคุณ
+
+- [Next.js](https://nextjs.org/)
+- [Tesseract.js](https://tesseract.projectnaptha.com/)
+- [jsQR](https://github.com/cozmo/jsQR)
+- [Bootstrap](https://getbootstrap.com/)
